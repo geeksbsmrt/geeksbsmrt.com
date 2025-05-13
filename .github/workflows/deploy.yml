@@ -53,24 +53,12 @@ jobs:
             exit 1 # Fail the workflow if public dir is not found
           fi
 
-      - name: Deploy to Server
-        uses: appleboy/ssh-action@v1.0.3
+      - name: Deploy to Server via Rsync
+        uses: easingthemes/ssh-deploy@v5.0.0 # Or check for the latest version
         env:
-          # Explicitly define an environment variable for the source path
-          DEPLOY_SOURCE_PATH: ${{ github.workspace }}/public
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            echo "Deploying to TARGET_DIR on host ${{ secrets.SSH_HOST }}"
-            echo "Source path for rsync should be: ${{ env.DEPLOY_SOURCE_PATH }}" # Check this output
-
-            echo "Attempting to list TARGET_DIR attributes on server:"
-            ls -ld ${{ secrets.TARGET_DIR }} || echo "Failed to list TARGET_DIR. Check path and permissions on server."
-
-            echo "Attempting rsync from '${{ env.DEPLOY_SOURCE_PATH }}'/ to '${{ secrets.TARGET_DIR }}'/"
-            # Using the env variable for the source path
-            rsync -avz --delete ${{ env.DEPLOY_SOURCE_PATH }}/ ${{ secrets.TARGET_DIR }}/
-
-            echo "Rsync command completed."
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ARGS: "-avz --delete" # Rsync arguments
+          SOURCE: "public/" # Source directory (relative to GITHUB_WORKSPACE)
+          REMOTE_HOST: ${{ secrets.SSH_HOST }}
+          REMOTE_USER: ${{ secrets.SSH_USER }}
+          TARGET: ${{ secrets.TARGET_DIR }}
