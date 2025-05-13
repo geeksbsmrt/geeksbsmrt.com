@@ -4,7 +4,7 @@ name: Build and Deploy Hugo Site with Blowfish (Submodule)
 on:
   push:
     branches:
-      - main # Or your primary branch
+      - main
 
 jobs:
   build-and-deploy:
@@ -13,42 +13,55 @@ jobs:
       - name: Checkout code with Submodules
         uses: actions/checkout@v4
         with:
-          submodules: recursive # CRITICAL: Fetches your Blowfish theme submodule
+          submodules: recursive
 
       - name: Setup Hugo (Extended Version)
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: 'latest' # Or pin to a specific Hugo version like '0.125.7'
-          extended: true        # REQUIRED for Blowfish (due to SCSS/SASS, PostCSS)
+          hugo-version: 'latest'
+          extended: true
 
-      # - name: Setup Node.js
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: '20' # Or a version compatible with Blowfish's package.json
-      #     cache: 'npm'
-      #     # Path to the theme's package-lock.json for caching
-      #     cache-dependency-path: 'themes/blowfish/package-lock.json'
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'themes/blowfish/package-lock.json'
 
-      # - name: Install Node.js Dependencies for Blowfish Theme
-      #   # This runs 'npm ci' inside the theme's directory where its package.json is located
-      #   working-directory: ./themes/blowfish
-      #   run: npm ci
+      - name: Install Node.js Dependencies for Blowfish Theme
+        working-directory: ./themes/blowfish
+        run: npm ci
 
       - name: Build Hugo site with Blowfish
-        # Run hugo from the project root.
-        # Hugo Pipes will use the Node.js tools installed in themes/blowfish/node_modules
-        run: hugo --minify
+        run: hugo --minify --panicOnWarning -v # Added --panicOnWarning and verbose -v
         env:
-          HUGO_ENV: production # Ensures production build, asset processing, and Tailwind CSS purging
+          HUGO_ENV: production
+
+      # DEBUGGING STEP: Check if the 'public' directory was created and has content
+      - name: Verify Build Output
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Listing contents of root directory:"
+          ls -la
+          echo "Checking for 'public' directory:"
+          if [ -d "public" ]; then
+            echo "'public' directory exists. Listing its contents:"
+            ls -la public
+          else
+            echo "'public' directory NOT FOUND!"
+            exit 1 # Fail the workflow if public dir is not found
+          fi
 
       - name: Deploy to Server
-        uses: appleboy/ssh-action@v1.0.3 # Or latest stable version
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # Assumes TARGET_DIR is an absolute path on your server
-            # where Caddy expects the site files (e.g., /var/www/geeksbsmrt.com or /path/to/project/live_site_content)
+            echo "Deploying to TARGET_DIR: ${{ secrets.TARGET_DIR }}"
+            # Ensure the target directory exists on the server (rsync can create it if parent exists)
+            # However, permissions must be correct on the parent for rsync to create TARGET_DIR
+            # A safer approach is to ensure TARGET_DIR is created manually on server with correct permissions first.
             rsync -avz --delete ./public/ ${{ secrets.TARGET_DIR }}/
-            echo "Deployment successful!"
+            echo "Rsync command completed."
