@@ -55,19 +55,22 @@ jobs:
 
       - name: Deploy to Server
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          # Explicitly define an environment variable for the source path
+          DEPLOY_SOURCE_PATH: ${{ github.workspace }}/public
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             echo "Deploying to TARGET_DIR on host ${{ secrets.SSH_HOST }}"
-            echo "Workspace path on runner is: ${GITHUB_WORKSPACE}"
+            echo "Source path for rsync should be: ${{ env.DEPLOY_SOURCE_PATH }}" # Check this output
 
-            # Debug: Test basic access to the target directory on the server
             echo "Attempting to list TARGET_DIR attributes on server:"
-            ls -ld ${{ secrets.TARGET_DIR }} || echo "Failed to list TARGET_DIR. Check path and permissions."
+            ls -ld ${{ secrets.TARGET_DIR }} || echo "Failed to list TARGET_DIR. Check path and permissions on server."
 
-            echo "Attempting rsync from ${GITHUB_WORKSPACE}/public/ to ${{ secrets.TARGET_DIR }}/"
-            rsync -avz --delete ${GITHUB_WORKSPACE}/public/ ${{ secrets.TARGET_DIR }}/
+            echo "Attempting rsync from '${{ env.DEPLOY_SOURCE_PATH }}'/ to '${{ secrets.TARGET_DIR }}'/"
+            # Using the env variable for the source path
+            rsync -avz --delete ${{ env.DEPLOY_SOURCE_PATH }}/ ${{ secrets.TARGET_DIR }}/
 
             echo "Rsync command completed."
