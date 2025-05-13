@@ -21,18 +21,18 @@ jobs:
           hugo-version: 'latest' # Or pin to a specific Hugo version like '0.125.7'
           extended: true        # REQUIRED for Blowfish (due to SCSS/SASS, PostCSS)
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20' # Or a version compatible with Blowfish's package.json
-          cache: 'npm'
-          # Path to the theme's package-lock.json for caching
-          cache-dependency-path: 'themes/blowfish/package-lock.json'
+      # - name: Setup Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: '20' # Or a version compatible with Blowfish's package.json
+      #     cache: 'npm'
+      #     # Path to the theme's package-lock.json for caching
+      #     cache-dependency-path: 'themes/blowfish/package-lock.json'
 
-      - name: Install Node.js Dependencies for Blowfish Theme
-        # This runs 'npm ci' inside the theme's directory where its package.json is located
-        working-directory: ./themes/blowfish
-        run: npm ci
+      # - name: Install Node.js Dependencies for Blowfish Theme
+      #   # This runs 'npm ci' inside the theme's directory where its package.json is located
+      #   working-directory: ./themes/blowfish
+      #   run: npm ci
 
       - name: Build Hugo site with Blowfish
         # Run hugo from the project root.
