@@ -34,7 +34,7 @@ jobs:
         run: npm ci
 
       - name: Build Hugo site with Blowfish
-        run: hugo --minify --panicOnWarning -v # Added --panicOnWarning and verbose -v
+        run: hugo --minify
         env:
           HUGO_ENV: production
 
@@ -53,16 +53,12 @@ jobs:
             exit 1 # Fail the workflow if public dir is not found
           fi
 
-      - name: Deploy to Server
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            echo "Deploying to TARGET_DIR: ${{ secrets.TARGET_DIR }}"
-            # Ensure the target directory exists on the server (rsync can create it if parent exists)
-            # However, permissions must be correct on the parent for rsync to create TARGET_DIR
-            # A safer approach is to ensure TARGET_DIR is created manually on server with correct permissions first.
-            rsync -avz --delete ./public/ ${{ secrets.TARGET_DIR }}/
-            echo "Rsync command completed."
+      - name: Deploy to Server via Rsync
+        uses: easingthemes/ssh-deploy@v5.0.0 # Or check for the latest version
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ARGS: "-avz --delete" # Rsync arguments
+          SOURCE: "public/" # Source directory (relative to GITHUB_WORKSPACE)
+          REMOTE_HOST: ${{ secrets.SSH_HOST }}
+          REMOTE_USER: ${{ secrets.SSH_USER }}
+          TARGET: ${{ secrets.TARGET_DIR }}
