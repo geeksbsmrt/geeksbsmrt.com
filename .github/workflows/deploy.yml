@@ -60,9 +60,14 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            echo "Deploying to TARGET_DIR: ${{ secrets.TARGET_DIR }}"
-            # Ensure the target directory exists on the server (rsync can create it if parent exists)
-            # However, permissions must be correct on the parent for rsync to create TARGET_DIR
-            # A safer approach is to ensure TARGET_DIR is created manually on server with correct permissions first.
-            rsync -avz --delete ./public/ ${{ secrets.TARGET_DIR }}/
+            echo "Deploying to TARGET_DIR on host ${{ secrets.SSH_HOST }}"
+            echo "Workspace path on runner is: ${GITHUB_WORKSPACE}"
+
+            # Debug: Test basic access to the target directory on the server
+            echo "Attempting to list TARGET_DIR attributes on server:"
+            ls -ld ${{ secrets.TARGET_DIR }} || echo "Failed to list TARGET_DIR. Check path and permissions."
+
+            echo "Attempting rsync from ${GITHUB_WORKSPACE}/public/ to ${{ secrets.TARGET_DIR }}/"
+            rsync -avz --delete ${GITHUB_WORKSPACE}/public/ ${{ secrets.TARGET_DIR }}/
+
             echo "Rsync command completed."
