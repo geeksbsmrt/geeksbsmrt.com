@@ -34,7 +34,7 @@ jobs:
         run: npm ci
 
       - name: Build Hugo site with Blowfish
-        run: hugo --minify --panicOnWarning -v # Added --panicOnWarning and verbose -v
+        run: hugo --minify
         env:
           HUGO_ENV: production
 
