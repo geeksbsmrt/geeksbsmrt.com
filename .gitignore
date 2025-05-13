@@ -1,0 +1,34 @@
+# Hugo generated files
+/public/
+/resources/
+.hugo_build.lock
+
+# Node.js dependencies folders (covers root and any nested node_modules including themes/blowfish/node_modules)
+node_modules/
+
+# Operating System generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE / Editor specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Local environment files (if you ever use them)
+.env
+
+# NPM log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# If you ever use Netlify Dev locally (unlikely with your setup, but common Hugo ignore)
+.netlify/
