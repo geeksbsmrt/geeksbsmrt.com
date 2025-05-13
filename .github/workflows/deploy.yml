@@ -1,0 +1,54 @@
+# .github/workflows/deploy.yml
+name: Build and Deploy Hugo Site with Blowfish (Submodule)
+
+on:
+  push:
+    branches:
+      - main # Or your primary branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code with Submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive # CRITICAL: Fetches your Blowfish theme submodule
+
+      - name: Setup Hugo (Extended Version)
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: 'latest' # Or pin to a specific Hugo version like '0.125.7'
+          extended: true        # REQUIRED for Blowfish (due to SCSS/SASS, PostCSS)
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Or a version compatible with Blowfish's package.json
+          cache: 'npm'
+          # Path to the theme's package-lock.json for caching
+          cache-dependency-path: 'themes/blowfish/package-lock.json'
+
+      - name: Install Node.js Dependencies for Blowfish Theme
+        # This runs 'npm ci' inside the theme's directory where its package.json is located
+        working-directory: ./themes/blowfish
+        run: npm ci
+
+      - name: Build Hugo site with Blowfish
+        # Run hugo from the project root.
+        # Hugo Pipes will use the Node.js tools installed in themes/blowfish/node_modules
+        run: hugo --minify
+        env:
+          HUGO_ENV: production # Ensures production build, asset processing, and Tailwind CSS purging
+
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@v1.0.3 # Or latest stable version
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # Assumes TARGET_DIR is an absolute path on your server
+            # where Caddy expects the site files (e.g., /var/www/geeksbsmrt.com or /path/to/project/live_site_content)
+            rsync -avz --delete ./public/ ${{ secrets.TARGET_DIR }}/
+            echo "Deployment successful!"
