@@ -22,21 +22,22 @@ jobs:
           hugo-version: 'latest'
           extended: true
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: 'themes/blowfish/package-lock.json'
+      # - name: Setup Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: '20'
+      #     cache: 'npm'
+      #     cache-dependency-path: 'themes/blowfish/package-lock.json'
 
-      - name: Install Node.js Dependencies for Blowfish Theme
-        working-directory: ./themes/blowfish
-        run: npm ci
+      # - name: Install Node.js Dependencies for Blowfish Theme
+      #   working-directory: ./themes/blowfish
+      #   run: npm ci
 
       - name: Build Hugo site with Blowfish
         run: hugo --minify
         env:
           HUGO_ENV: production
+          HUGO_SERVICES_GOOGLEANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
 
       # DEBUGGING STEP: Check if the 'public' directory was created and has content
       - name: Verify Build Output
