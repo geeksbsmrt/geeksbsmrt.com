@@ -9,7 +9,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout code with Submodules
         uses: actions/checkout@v4
@@ -22,44 +22,11 @@ jobs:
           hugo-version: 'latest'
           extended: true
 
-      # - name: Setup Node.js
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: '20'
-      #     cache: 'npm'
-      #     cache-dependency-path: 'themes/blowfish/package-lock.json'
-
-      # - name: Install Node.js Dependencies for Blowfish Theme
-      #   working-directory: ./themes/blowfish
-      #   run: npm ci
-
       - name: Build Hugo site with Blowfish
         run: hugo --minify
         env:
           HUGO_ENV: production
           HUGO_SERVICES_GOOGLEANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
 
-      # DEBUGGING STEP: Check if the 'public' directory was created and has content
-      - name: Verify Build Output
-        run: |
-          echo "Current directory: $(pwd)"
-          echo "Listing contents of root directory:"
-          ls -la
-          echo "Checking for 'public' directory:"
-          if [ -d "public" ]; then
-            echo "'public' directory exists. Listing its contents:"
-            ls -la public
-          else
-            echo "'public' directory NOT FOUND!"
-            exit 1 # Fail the workflow if public dir is not found
-          fi
-
       - name: Deploy to Server via Rsync
-        uses: easingthemes/ssh-deploy@v5.0.0 # Or check for the latest version
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          ARGS: "-avz --delete" # Rsync arguments
-          SOURCE: "public/" # Source directory (relative to GITHUB_WORKSPACE)
-          REMOTE_HOST: ${{ secrets.SSH_HOST }}
-          REMOTE_USER: ${{ secrets.SSH_USER }}
-          TARGET: ${{ secrets.TARGET_DIR }}
+        run: rsync ${{ github.workspace }}/public/ ${{ secrets.TARGET_DIR }} --delete -avz
