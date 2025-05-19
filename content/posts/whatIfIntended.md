@@ -127,15 +127,15 @@ If direct variable assignment and `-OutVariable` both allow setting the value of
 
 ### The Source Solution
 
-We now have to ask ourselves where the best place to update source would be. From my perspective, we have a few options, each with their own interesting challenges.
+We now have to ask ourselves where the best place to update source would be. I believe there are a few options, listed in what I believe to be most to least acceptable.
 
 1. Update `Tee-Object` to add `SupportsShouldProcess` functionality.
-    - Likely easiest to implement while minimizing risk to existing scrips.
+    - Minimizes risk to existing scrips.
     - Doesn't require changing current implementations of `Out-File` or `Set-Variable`
     - Allows passing `-WhatIf:$false` to override `$WhatIfPreference = $true` so that `Out-File` or `Set-Variable` perform their function.
 1. Update `Tee-Object` to remove the dependency on `Set-Variable`.
-    - Write or reference code that sets the variable inside `Tee-Object`
-    - Would still show the `WhatIf` output when teeing to a file, which I believe would be the expected behavior due to `Out-File` changing system state.
+    - Write or reference code that sets the variable inside `Tee-Object`.
+    - Would still show the `WhatIf` output when teeing to a file.
 1. Update `Tee-Object` to add another NamedParameter value setting `WhatIf = $false`
     - Potentially breaking change: any script that uses `Tee-Object` and expects the `WhatIf:` output would break.
     - Hacky and effectively hides implementation details.
