@@ -136,6 +136,9 @@ We now have to ask ourselves where the best place to update source would be. Fro
 1. Update `Tee-Object` to remove the dependency on `Set-Variable`.
     - Write or reference code that sets the variable inside `Tee-Object`
     - Would still show the `WhatIf` output when teeing to a file, which I believe would be the expected behavior due to `Out-File` changing system state.
+1. Update `Tee-Object` to add another NamedParameter value setting `WhatIf = $false`
+    - Potentially breaking change: any script that uses `Tee-Object` and expects the `WhatIf:` output would break.
+    - Hacky and effectively hides implementation details.
 1. Update `Set-Variable` to remove `SupportsShouldProcess` functionality.
     - Breaking change: any script that references `Set-Variable -WhatIf` is now broken.
     - Brings `Set-Variable` into alignment with direct variable assignment and `-OutVariable` functionality.
