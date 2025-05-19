@@ -121,6 +121,21 @@ This example does just that. By using `Write-Output`, a non-state changing comma
 
 ## The Better Question
 
-`Set-Variable` clearly and accurately respects the `$WhatIfPreference`. As expected, direct variable assignment (`$var = val`) allows the variable to be set regardless of the `$WhatIfPreference` value. What's interesting though is that `-OutVariable` also allows the variable to be set. This raises another very interesting questions that should be discussed with a larger audience.
+`Set-Variable` clearly and accurately respects the `$WhatIfPreference`. As expected, direct variable assignment (`$var = val`) allows the variable to be set regardless of the `$WhatIfPreference` value. What's interesting though is that `-OutVariable` also allows the variable to be set. This raises another very interesting question that should be discussed with a larger audience.
 
 If direct variable assignment and `-OutVariable` both allow setting the value of a variable when `$WhatIfPreference = $true`, why does `Set-Variable` implement `SupportsShouldProcess`?
+
+### The Source Solution
+
+We now have to ask ourselves where the best place to update source would be. From my perspective, we have a few options, each with their own interesting challenges.
+
+1. Update `Tee-Object` to add `SupportsShouldProcess` functionality.
+    - Likely easiest to implement while minimizing risk to existing scrips.
+    - Doesn't require changing current implementations of `Out-File` or `Set-Variable`
+    - Allows passing `-WhatIf:$false` to override `$WhatIfPreference = $true` so that `Out-File` or `Set-Variable` perform their function.
+1. Update `Tee-Object` to remove the dependency on `Set-Variable`.
+    - Write or reference code that sets the variable inside `Tee-Object`
+    - Would still show the `WhatIf` output when teeing to a file, which I believe would be the expected behavior due to `Out-File` changing system state.
+1. Update `Set-Variable` to remove `SupportsShouldProcess` functionality.
+    - Breaking change: any script that references `Set-Variable -WhatIf` is now broken.
+    - Brings `Set-Variable` into alignment with direct variable assignment and `-OutVariable` functionality.
