@@ -35,7 +35,7 @@ For much of my career, I've used many open-source or open-core products. I've le
 
 ## How I'm Getting There
 
-The answer to this question isn't as straight forward. There's a lot of learning, trials, and errors ahead. This blog will contain the highlights, low-lights, and delights of my journey. I'm hoping to post weekly, or at least every other week.
+The answer to this question isn't as straight forward. There's a lot of learning, trials, and errors ahead. This blog will contain the hi-lights, lo-lights, and de-lights of my journey. I'm hoping to post weekly, or at least every other week.
 
 I'm always open to advice, shared experiences, or just hearing from others on similar paths. I'll be working on enabling comments for the blog in the coming weeks.
 
