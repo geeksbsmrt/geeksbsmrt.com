@@ -1,7 +1,7 @@
 ---
 title: "WhatIf It's Working as Intended?"
 description: "When developers and users disagree"
-date: "2025-05-14"
+date: "2025-05-17"
 ---
 
 ## The Issue
