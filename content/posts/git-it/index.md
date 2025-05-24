@@ -1,11 +1,11 @@
 ---
 title: "How Does an IT Engineer Git IT?"
-description: "Join an IT professional on their journey from support to engineer and beyond."
+summary: "The question I've asked my entire career."
 date: "2025-05-10"
 #cspell:words ments Entra
 ---
 
-The question I've asked my entire career.
+
 
 ## Let's Git InIT
 
@@ -33,8 +33,6 @@ For much of my career, I've used many open-source or open-core products. I've le
 
 ## How I'm Getting There
 
-The answer to this question isn't as straight forward. There's a lot of learning, trials, and errors ahead. This blog will contain the hi-lights, lo-lights, and de-lights of my journey. I'm hoping to post weekly, or at least every other week.
-
-I'm always open to advice, shared experiences, or just hearing from others on similar paths. I'll be working on enabling comments for the blog in the coming weeks.
+The answer to this question isn't as straight forward. There's a lot of learning, trials, and errors ahead. This blog will contain the hi-lights, lo-lights, and de-lights of my journey.
 
 Stay *InTune*-d.

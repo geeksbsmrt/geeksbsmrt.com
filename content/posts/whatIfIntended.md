@@ -1,6 +1,6 @@
 ---
 title: "WhatIf It's Working as Intended?"
-description: "When developers and users disagree"
+summary: "Examining an Issue on the PowerShell GitHub Repository"
 date: "2025-05-17"
 ---
 
