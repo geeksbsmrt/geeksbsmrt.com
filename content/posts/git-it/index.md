@@ -5,8 +5,6 @@ date: "2025-05-10"
 #cspell:words ments Entra
 ---
 
-
-
 ## Let's Git InIT
 
 To *Git* where I'm *head*-ed, we need to go back in *history*. My first *commit*-ments were in user support, and as so many do, laid the framework for my career. From there, I *branched* into client engineering, automating operating system and application deployments. I *fetch*-ed a Bachelor of Science degree in mobile development, though I *stashed* most of those skills for a long time. The next *fork* brought me to infrastructure engineering, *cherry-pick*-ing Microsoft technologies. Now, I develop and *push* platforms to our support teams. I'm looking for a way to *merge* all of my skills and *rebase* my career.
