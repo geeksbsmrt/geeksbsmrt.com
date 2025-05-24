@@ -7,8 +7,6 @@ date: "2025-05-10"
 
 The question I've asked my entire career.
 
-My name's Adam, and for the better part of two decades, I've been working in support and on-premises engineering. Making things work, keeping them secure, and automating them as much as possible. Why? Buttons and humans. I hate buttons, especially those my wife and kids love to push. Then there are the humans. And no, I don't hate humans. However, they are error prone, and any IT professional will tell you, users are the most error prone humans on the planet. Automation minimizes both.
-
 ## Let's Git InIT
 
 To *Git* where I'm *head*-ed, we need to go back in *history*. My first *commit*-ments were in user support, and as so many do, laid the framework for my career. From there, I *branched* into client engineering, automating operating system and application deployments. I *fetch*-ed a Bachelor of Science degree in mobile development, though I *stashed* most of those skills for a long time. The next *fork* brought me to infrastructure engineering, *cherry-pick*-ing Microsoft technologies. Now, I develop and *push* platforms to our support teams. I'm looking for a way to *merge* all of my skills and *rebase* my career.

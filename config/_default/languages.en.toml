@@ -16,5 +16,6 @@ links = [
     {github = "https://github.com/geeksbsmrt"},
     {linkedin = "https://www.linkedin.com/in/awcrawford/"},
 ]
-name = "Adam Crawford"
+headline = "My name's Adam, and for the better part of two decades, I've been working in support and on-premises IT engineering. Making things work, keeping them secure, and automating them as much as possible. Why? Buttons and humans. I hate buttons, especially those my wife and kids love to push. Then there are the humans. And no, I don't hate humans. However, they are error prone, and any IT professional will tell you, users are the most error prone humans on the planet. Automation minimizes both."
+name = "GeeksBsmrt"
 image = "profile.jpg"
