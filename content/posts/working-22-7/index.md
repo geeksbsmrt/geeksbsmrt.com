@@ -2,6 +2,8 @@
 title: "Working 22/7"
 summary: "Career, family, a home lab, and a blog, with no dessert in sight."
 date: "2025-05-27"
+series: ["RaspberryPi"]
+series_order: 1
 ---
 
 Working as a full-time Client Platform Engineer, raising a family, setting up a home lab, and blogging has me feeling like I get no sleep. I feel like I'm working 22 hours a day, 7 days a week. I'm not, but my Raspberry Pi is.
