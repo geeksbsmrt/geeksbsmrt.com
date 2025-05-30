@@ -26,7 +26,6 @@ jobs:
         run: hugo --minify
         env:
           HUGO_ENV: production
-          HUGO_SERVICES_GOOGLEANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
 
       - name: Deploy to Server via Rsync
         run: rsync ${{ github.workspace }}/public/ ${{ secrets.TARGET_DIR }} --delete -avz
