@@ -15,6 +15,16 @@ buildFuture = false
 
 enableEmoji = true
 
+enableGitInfo = true
+
+[frontmatter]
+  lastmod = ["lastmod", ":git", "date"]
+  date = ["date", "publishDate", ":git", "lastmod"]
+
+# [services]
+#   [services.googleAnalytics]
+#     id = 'G-BQVM7DY2N5'
+
 [pagination]
   pagerSize = 100
 
