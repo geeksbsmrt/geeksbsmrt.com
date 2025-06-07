@@ -1,0 +1,18 @@
+.scrollable-code-container {
+    max-height: 400px;
+    /* Adjust this value to your desired maximum height */
+    overflow: auto;
+    /* This will add scrollbars automatically when needed:
+                           - Vertical scrollbar if content exceeds max-height
+                           - Horizontal scrollbar if content exceeds width (e.g., long lines of code) */
+    /* Optional: Add some padding or margin if needed */
+    /* margin-bottom: 1.5rem; */
+}
+
+/*
+    The 'highlight' function in Hugo often wraps the <pre> tag in a <div class="highlight">.
+    The 'overflow: auto' on '.scrollable-code-container' should generally handle scrolling for its entire content.
+    If you find that long lines of code still don't scroll horizontally as expected within the <pre> tag,
+    you might need to ensure the <pre> tag itself allows for it, though 'overflow: auto' on the container
+    usually suffices. The default 'white-space: pre;' on <pre> tags is important for this.
+  */

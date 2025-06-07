@@ -1,0 +1,55 @@
+{{/*
+Shortcode: codeurl
+Description: Fetches content from a remote URL and displays it in a code block
+with syntax highlighting.
+Parameters:
+url: The full HTTP/HTTPS URL of the file to fetch (required).
+lang: Language for syntax highlighting (optional, defaults to auto-detect or plain text).
+linenos: Show line numbers (optional, e.g., "table", "inline", true, false).
+hl_lines: Lines to highlight (optional, e.g., "5-7 10").
+*/}}
+
+{{ $url := .Get "url" }}
+{{ $fileContent := "" }}
+{{ $fetchError := "" }}
+
+{{ if not $url }}
+{{ $fetchError = "Required 'url' parameter is missing." }}
+{{ else }}
+{{ $tried := try (resources.GetRemote $url) }}
+{{ $resource := $tried.Value }}
+{{ if $resource }}
+{{ $fileContent = $resource.Content }}
+{{ if not $fileContent }}
+{{ $fetchError = printf "URL '%s' was fetched but returned no content or is empty." $url }}
+{{ end }}
+{{ else }}
+{{ $fetchError = printf "Error fetching URL '%s'." $url }}
+{{ end }}
+{{ end }}
+
+{{ $lang := .Get "lang" | default "" }}
+{{ $linenos := .Get "linenos" | default false }}
+{{ $hl_lines := .Get "hl_lines" | default "" }}
+{{ $opts := dict }}
+
+{{ if eq $linenos "true" }}
+{{ $opts = merge $opts (dict "linenos" true) }}
+{{ else if $linenos }}
+{{ $opts = merge $opts (dict "linenos" $linenos) }}
+{{ end }}
+
+{{ if $hl_lines }}
+{{ $opts = merge $opts (dict "hl_lines" $hl_lines) }}
+{{ end }}
+
+{{ if $fileContent }}
+<div class="scrollable-code-container">
+    {{ highlight $fileContent $lang $opts }}
+</div>
+{{ else }}
+<p class="error">
+    Error in <code>codeurl</code> shortcode:
+    {{ $fetchError | default (printf "Could not retrieve content from URL '%s'." $url) }}
+</p>
+{{ end }}
