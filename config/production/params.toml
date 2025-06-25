@@ -1,6 +1,6 @@
 [umamiAnalytics]
-    websiteid = "4f3e9271-2096-4960-a2d5-603484a5cc94"
-    domain = "analytics.geeksbsmrt.com"
-    dataDomains = "geeksbsmrt.com"
-    #scriptName = ""
-    enableTrackEvent = true
+websiteid = "10b489a2-d576-4ed7-8b06-e84da4a2bd80"
+domain = "analytics.geeksbsmrt.com"
+dataDomains = "geeksbsmrt.com"
+#scriptName = ""
+enableTrackEvent = true
